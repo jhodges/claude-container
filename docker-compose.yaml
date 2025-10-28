@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  claude:
+    build: .
+    volumes:
+      - /home/jhodges/Documents/Projects/prosm:/workspace
+      - ./claude-config:/home/claude
+      - /tmp:/tmp
+    stdin_open: true
+    tty: true
+    user: "${UID}:${GID}"  # Map to host user/group
+    profiles:
+      - interactive
+
+  bash:
+    build: .
+    volumes:
+      - ./safe-workspace:/workspace
+      - ./claude-config:/home/claude
+      - /tmp:/tmp
+    stdin_open: true
+    tty: true
+    entrypoint: ["/bin/bash"]
+    environment:
+      - HOME=/home/claude
+    user: "${UID}:${GID}"  # Map to host user/group
+    profiles:
+      - interactive
